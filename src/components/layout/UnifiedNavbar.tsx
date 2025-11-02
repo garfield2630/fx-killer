@@ -30,6 +30,10 @@ export default function UnifiedNavbar() {
       link: "/splan/join-us",
     },
     {
+      name: t('nav.blog'),
+      link: "/splan/blog",
+    },
+    {
       name: t('nav.psychology'),
       link: "/splan/psychology-test",
     },

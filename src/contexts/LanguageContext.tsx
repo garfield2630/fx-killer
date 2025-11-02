@@ -22,6 +22,7 @@ const translations: Record<Language, Record<string, string>> = {
     // 导航栏
     'nav.home': '首页',
     'nav.training': '外汇培训',
+    'nav.blog': '交易博客',
     'nav.psychology': '心理测评',
     'nav.dashboard': '交易系统',
     'nav.faq': '常见问题',
@@ -437,6 +438,19 @@ const translations: Record<Language, Record<string, string>> = {
     'notification.message1': '已联系团队长参加外汇交易员培训',
     'notification.message2': '已成为试用会员',
     'notification.time': '刚刚',
+
+    // Blog
+    'blog.title': '交易博客',
+    'blog.subtitle': '专业交易知识、实战经验与交易智慧分享',
+    'blog.featured': '精选',
+    'blog.minRead': '分钟阅读',
+    'blog.noPosts': '暂无文章',
+    'blog.notFound': '文章未找到',
+    'blog.backToBlog': '返回博客',
+    'blog.relatedPosts': '相关文章',
+    'blog.cta.title': '准备开始您的交易之旅？',
+    'blog.cta.subtitle': '加入FX Killer，接受专业的交易员培训',
+    'blog.cta.button': '立即加入',
   },
   en: {
     // Brand Name
@@ -446,6 +460,7 @@ const translations: Record<Language, Record<string, string>> = {
     // Navigation
     'nav.home': 'Home',
     'nav.training': 'FX Training',
+    'nav.blog': 'Blog',
     'nav.psychology': 'Psychology Test',
     'nav.dashboard': 'Dashboard',
     'nav.faq': 'FAQ',
@@ -861,6 +876,19 @@ const translations: Record<Language, Record<string, string>> = {
     'notification.message1': 'Contacted team leader to join forex trader training',
     'notification.message2': 'Became a trial member',
     'notification.time': 'Just now',
+
+    // Blog
+    'blog.title': 'Trading Blog',
+    'blog.subtitle': 'Professional trading knowledge, practical experience & trading wisdom sharing',
+    'blog.featured': 'Featured',
+    'blog.minRead': 'min read',
+    'blog.noPosts': 'No posts available',
+    'blog.notFound': 'Post not found',
+    'blog.backToBlog': 'Back to Blog',
+    'blog.relatedPosts': 'Related Posts',
+    'blog.cta.title': 'Ready to Start Your Trading Journey?',
+    'blog.cta.subtitle': 'Join FX Killer for professional trader training',
+    'blog.cta.button': 'Join Now',
   }
 };
 
