@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useLanguage } from '@/contexts/LanguageContext';
 
 interface ExchangeRates {
@@ -98,7 +98,7 @@ export default function PositionCalculatorPage() {
   }, [isZh]);
 
   // Get current price for currency pair
-  const getCurrentPrice = (pair: string): number => {
+  const getCurrentPrice = useCallback((pair: string): number => {
     // Special handling for gold
     if (pair === 'XAUUSD') {
       return goldPrice;
@@ -123,10 +123,10 @@ export default function PositionCalculatorPage() {
       const quoteToUSD = 1 / (exchangeRates[quote] || 1);
       return baseToUSD / quoteToUSD;
     }
-  };
+  }, [exchangeRates, goldPrice]);
 
   // Calculate pip value correctly based on currency pair and lot size
-  const calculatePipValue = (pair: string, lotSize: number, accountCurr: string): number => {
+  const calculatePipValue = useCallback((pair: string, lotSize: number, accountCurr: string): number => {
     // Special handling for gold (XAU/USD)
     if (pair === 'XAUUSD') {
       // For gold: 1 standard lot = 100 oz, 1 pip = $0.01
@@ -173,16 +173,10 @@ export default function PositionCalculatorPage() {
       const usdToAccount = exchangeRates[accountCurr] || 1;
       return pipValueInQuote * quoteToUsd * usdToAccount;
     }
-  };
+  }, [exchangeRates]);
 
-  // Real-time calculation
-  useEffect(() => {
-    if (!ratesLoading && Object.keys(exchangeRates).length > 0) {
-      calculatePosition();
-    }
-  }, [accountBalance, riskPercentage, stopLossPips, currencyPair, takeProfitPips, leverage, accountCurrency, exchangeRates, goldPrice, ratesLoading]);
-
-  const calculatePosition = () => {
+  // Calculate position with useCallback to avoid dependency issues
+  const calculatePosition = useCallback(() => {
     const balance = parseFloat(accountBalance) || 0;
     const risk = parseFloat(riskPercentage) || 0;
     const slPips = parseFloat(stopLossPips) || 0;
@@ -241,7 +235,14 @@ export default function PositionCalculatorPage() {
       marginRequired: Math.round(marginRequired * 100) / 100,
       currentPrice: Math.round(currentPrice * 100000) / 100000,
     });
-  };
+  }, [accountBalance, riskPercentage, stopLossPips, currencyPair, takeProfitPips, leverage, accountCurrency, getCurrentPrice, calculatePipValue]);
+
+  // Real-time calculation
+  useEffect(() => {
+    if (!ratesLoading && Object.keys(exchangeRates).length > 0) {
+      calculatePosition();
+    }
+  }, [calculatePosition, ratesLoading, exchangeRates]);
 
   // Check if enough margin
   const hasEnoughMargin = parseFloat(accountBalance) >= results.marginRequired;
