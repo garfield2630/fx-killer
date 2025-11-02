@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import type { TradingConfig } from '@/lib/trading/types';
 
 interface CompactStrategyConfigProps {
@@ -9,12 +9,49 @@ interface CompactStrategyConfigProps {
   showPresets?: boolean;
 }
 
+interface BinanceSymbol {
+  symbol: string;
+  baseAsset: string;
+  quoteAsset: string;
+}
+
 export default function CompactStrategyConfig({
   config,
   onConfigChange,
   showPresets = true
 }: CompactStrategyConfigProps) {
   const [expanded, setExpanded] = useState(false);
+  const [symbols, setSymbols] = useState<BinanceSymbol[]>([]);
+  const [loadingSymbols, setLoadingSymbols] = useState(false);
+
+  // Fetch symbols from Binance
+  useEffect(() => {
+    const fetchSymbols = async () => {
+      setLoadingSymbols(true);
+      try {
+        const response = await fetch('/api/trading/symbols');
+        if (response.ok) {
+          const data = await response.json();
+          // Use popular symbols if available, otherwise all symbols
+          setSymbols(data.popular && data.popular.length > 0 ? data.popular : data.all || []);
+        }
+      } catch (error) {
+        console.error('Failed to fetch symbols:', error);
+        // Fallback to default symbols
+        setSymbols([
+          { symbol: 'XAUUSDT', baseAsset: 'XAU', quoteAsset: 'USDT' },
+          { symbol: 'BTCUSDT', baseAsset: 'BTC', quoteAsset: 'USDT' },
+          { symbol: 'ETHUSDT', baseAsset: 'ETH', quoteAsset: 'USDT' },
+          { symbol: 'BNBUSDT', baseAsset: 'BNB', quoteAsset: 'USDT' },
+          { symbol: 'SOLUSDT', baseAsset: 'SOL', quoteAsset: 'USDT' },
+        ]);
+      } finally {
+        setLoadingSymbols(false);
+      }
+    };
+
+    fetchSymbols();
+  }, []);
 
   const updateConfig = (path: string[], value: any) => {
     const newConfig = { ...config };
@@ -135,13 +172,26 @@ export default function CompactStrategyConfig({
                 <select
                   value={config.symbol}
                   onChange={(e) => updateConfig(['symbol'], e.target.value)}
-                  className="w-full px-3 py-2 text-sm border-2 border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-900 text-black dark:text-white focus:border-black dark:focus:border-white outline-none"
+                  disabled={loadingSymbols}
+                  className="w-full px-3 py-2 text-sm border-2 border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-900 text-black dark:text-white focus:border-black dark:focus:border-white outline-none disabled:opacity-50"
                 >
-                  <option value="XAUUSDT">XAUUSDT (黄金)</option>
-                  <option value="BTCUSDT">BTCUSDT (比特币)</option>
-                  <option value="ETHUSDT">ETHUSDT (以太坊)</option>
-                  <option value="SOLUSDT">SOLUSDT (Solana)</option>
-                  <option value="BNBUSDT">BNBUSDT (BNB)</option>
+                  {loadingSymbols ? (
+                    <option>加载中...</option>
+                  ) : symbols.length > 0 ? (
+                    symbols.map((s) => (
+                      <option key={s.symbol} value={s.symbol}>
+                        {s.symbol} ({s.baseAsset})
+                      </option>
+                    ))
+                  ) : (
+                    <>
+                      <option value="XAUUSDT">XAUUSDT (黄金)</option>
+                      <option value="BTCUSDT">BTCUSDT (比特币)</option>
+                      <option value="ETHUSDT">ETHUSDT (以太坊)</option>
+                      <option value="SOLUSDT">SOLUSDT (Solana)</option>
+                      <option value="BNBUSDT">BNBUSDT (BNB)</option>
+                    </>
+                  )}
                 </select>
               </div>
               <div>

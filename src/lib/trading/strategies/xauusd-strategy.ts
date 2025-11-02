@@ -132,7 +132,8 @@ export class XAUUSDStrategy {
   }
 
   /**
-   * Check if long entry conditions are met - MATCHES PYTHON VERSION
+   * Check if long entry conditions are met - MODIFIED FOR MORE SIGNALS
+   * Changed from strict crossover to MACD position check for more trading opportunities
    */
   private checkLongEntry(
     price: number,
@@ -146,12 +147,16 @@ export class XAUUSDStrategy {
       signalPeriod: this.config.strategy.indicators.macd.signalPeriod,
     };
 
-    // Base conditions (from Python line 212-216)
+    // Base conditions - Modified to be less restrictive
     const priceAboveKeltner = price > indicators.keltner.upper;
     const priceAboveBollinger = price > indicators.bollinger.upper;
-    const macdCrossoverUp = isMACDBullishCrossover(candles, macdConfig);
 
-    const longBase = priceAboveKeltner && priceAboveBollinger && macdCrossoverUp;
+    // Check for recent MACD crossover (within last 5 candles) OR current bullish position
+    const macdCrossoverUp = isMACDBullishCrossover(candles, macdConfig);
+    const macdBullish = indicators.macd.macd > indicators.macd.signal && indicators.macd.histogram > 0;
+    const macdCondition = macdCrossoverUp || macdBullish; // Accept either crossover or bullish position
+
+    const longBase = priceAboveKeltner && priceAboveBollinger && macdCondition;
 
     if (!longBase) {
       return { signal: false, reason: 'Base conditions not met' };
@@ -192,7 +197,8 @@ export class XAUUSDStrategy {
   }
 
   /**
-   * Check if short entry conditions are met - MATCHES PYTHON VERSION
+   * Check if short entry conditions are met - MODIFIED FOR MORE SIGNALS
+   * Changed from strict crossover to MACD position check for more trading opportunities
    */
   private checkShortEntry(
     price: number,
@@ -206,12 +212,16 @@ export class XAUUSDStrategy {
       signalPeriod: this.config.strategy.indicators.macd.signalPeriod,
     };
 
-    // Base conditions (from Python line 236-240)
+    // Base conditions - Modified to be less restrictive
     const priceBelowKeltner = price < indicators.keltner.lower;
     const priceBelowBollinger = price < indicators.bollinger.lower;
-    const macdCrossoverDown = isMACDBearishCrossover(candles, macdConfig);
 
-    const shortBase = priceBelowKeltner && priceBelowBollinger && macdCrossoverDown;
+    // Check for recent MACD crossover (within last 5 candles) OR current bearish position
+    const macdCrossoverDown = isMACDBearishCrossover(candles, macdConfig);
+    const macdBearish = indicators.macd.macd < indicators.macd.signal && indicators.macd.histogram < 0;
+    const macdCondition = macdCrossoverDown || macdBearish; // Accept either crossover or bearish position
+
+    const shortBase = priceBelowKeltner && priceBelowBollinger && macdCondition;
 
     if (!shortBase) {
       return { signal: false, reason: 'Base conditions not met' };
