@@ -22,6 +22,7 @@ const translations: Record<Language, Record<string, string>> = {
     // 导航栏
     'nav.home': '首页',
     'nav.training': '外汇培训',
+    'nav.tools': '工具',
     'nav.blog': '交易博客',
     'nav.psychology': '心理测评',
     'nav.dashboard': '交易系统',
@@ -461,6 +462,7 @@ const translations: Record<Language, Record<string, string>> = {
     // Navigation
     'nav.home': 'Home',
     'nav.training': 'FX Training',
+    'nav.tools': 'Tools',
     'nav.blog': 'Blog',
     'nav.psychology': 'Psychology Test',
     'nav.dashboard': 'Dashboard',

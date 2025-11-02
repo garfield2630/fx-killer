@@ -30,6 +30,10 @@ export default function UnifiedNavbar() {
       link: "/splan/join-us",
     },
     {
+      name: t('nav.tools'),
+      link: "/tools/position-calculator",
+    },
+    {
       name: t('nav.blog'),
       link: "/splan/blog",
     },
