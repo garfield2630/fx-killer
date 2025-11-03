@@ -37,8 +37,12 @@ export default function CompactStrategyConfig({
         }
       } catch (error) {
         console.error('Failed to fetch symbols:', error);
-        // Fallback to default symbols (only real Binance futures contracts)
+        // Fallback to default symbols - forex + crypto
         setSymbols([
+          { symbol: 'XAUUSDT', baseAsset: 'XAU', quoteAsset: 'USDT' },
+          { symbol: 'EURUSD', baseAsset: 'EUR', quoteAsset: 'USD' },
+          { symbol: 'GBPUSD', baseAsset: 'GBP', quoteAsset: 'USD' },
+          { symbol: 'USDJPY', baseAsset: 'USD', quoteAsset: 'JPY' },
           { symbol: 'BTCUSDT', baseAsset: 'BTC', quoteAsset: 'USDT' },
           { symbol: 'ETHUSDT', baseAsset: 'ETH', quoteAsset: 'USDT' },
           { symbol: 'BNBUSDT', baseAsset: 'BNB', quoteAsset: 'USDT' },
@@ -218,6 +222,10 @@ export default function CompactStrategyConfig({
                     ))
                   ) : (
                     <>
+                      <option value="XAUUSDT">XAUUSDT (黄金)</option>
+                      <option value="EURUSD">EURUSD (欧元/美元)</option>
+                      <option value="GBPUSD">GBPUSD (英镑/美元)</option>
+                      <option value="USDJPY">USDJPY (美元/日元)</option>
                       <option value="BTCUSDT">BTCUSDT (比特币)</option>
                       <option value="ETHUSDT">ETHUSDT (以太坊)</option>
                       <option value="BNBUSDT">BNBUSDT (BNB)</option>

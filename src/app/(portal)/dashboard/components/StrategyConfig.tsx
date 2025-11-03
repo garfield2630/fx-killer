@@ -12,8 +12,12 @@ export default function StrategyConfig({ config, onConfigChange }: StrategyConfi
   const [popularSymbols, setPopularSymbols] = useState<string[]>([]);
   const [loadingSymbols, setLoadingSymbols] = useState(false);
 
-  // 热门交易对列表（默认） - 仅币安U本位合约真实交易对
+  // 热门交易对列表（默认） - 外汇品种 + 加密货币
   const defaultSymbols = [
+    'XAUUSDT', // 黄金/USDT（推荐，回调策略验证通过）
+    'EURUSD', // 欧元/美元
+    'GBPUSD', // 英镑/美元
+    'USDJPY', // 美元/日元
     'BTCUSDT', // 比特币
     'ETHUSDT', // 以太坊
     'BNBUSDT', // BNB
