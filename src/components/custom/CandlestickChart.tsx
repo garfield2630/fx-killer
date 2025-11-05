@@ -8,6 +8,7 @@ interface Candle {
   high: number;
   low: number;
   close: number;
+  volume: number;
 }
 
 export default function CandlestickChart() {
@@ -32,11 +33,62 @@ export default function CandlestickChart() {
     updateCanvasSize();
     window.addEventListener('resize', updateCanvasSize);
 
-    // Generate a single candle
+    // Update trend state
+    const updateTrend = () => {
+      trendDuration++;
+
+      // Check if we should change trend
+      const shouldChangeTrend =
+        trendDuration >= maxTrendDuration ||
+        (trendDuration >= minTrendDuration && Math.random() < 0.15);
+
+      if (shouldChangeTrend) {
+        const trends: Array<'up' | 'down' | 'sideways'> = ['up', 'down', 'sideways'];
+        const otherTrends = trends.filter(t => t !== currentTrend);
+        currentTrend = otherTrends[Math.floor(Math.random() * otherTrends.length)];
+        trendDuration = 0;
+      }
+    };
+
+    // Generate a single candle with trend
     const generateCandle = (previousClose: number): Candle => {
       const time = Date.now();
       const open = previousClose;
-      const changePercent = (Math.random() - 0.5) * 0.04;
+
+      // Update trend state
+      updateTrend();
+
+      // 10-15% chance to generate a large candle (大阳线/大阴线)
+      const isLargeCandle = Math.random() < 0.12;
+
+      let changePercent;
+
+      // Calculate change based on trend
+      if (currentTrend === 'up') {
+        // Uptrend: 70% bullish, 30% bearish
+        const isBullish = Math.random() < 0.7;
+        if (isLargeCandle) {
+          changePercent = isBullish ? Math.random() * 0.06 : -Math.random() * 0.03;
+        } else {
+          changePercent = isBullish ? Math.random() * 0.025 : -Math.random() * 0.015;
+        }
+      } else if (currentTrend === 'down') {
+        // Downtrend: 70% bearish, 30% bullish
+        const isBearish = Math.random() < 0.7;
+        if (isLargeCandle) {
+          changePercent = isBearish ? -Math.random() * 0.06 : Math.random() * 0.03;
+        } else {
+          changePercent = isBearish ? -Math.random() * 0.025 : Math.random() * 0.015;
+        }
+      } else {
+        // Sideways: 50/50 with smaller moves
+        if (isLargeCandle) {
+          changePercent = (Math.random() - 0.5) * 0.05;
+        } else {
+          changePercent = (Math.random() - 0.5) * 0.02;
+        }
+      }
+
       const close = open * (1 + changePercent);
 
       // Random wick length: 0% to 0.8% (shorter and more varied)
@@ -46,7 +98,12 @@ export default function CandlestickChart() {
       const high = Math.max(open, close) * (1 + upperWickPercent);
       const low = Math.min(open, close) * (1 - lowerWickPercent);
 
-      return { time, open, high, low, close };
+      // Generate volume (random between 5000 and 50000, larger for big candles)
+      const baseVolume = isLargeCandle ? 30000 : 15000;
+      const volumeVariance = isLargeCandle ? 20000 : 10000;
+      const volume = baseVolume + Math.random() * volumeVariance;
+
+      return { time, open, high, low, close, volume };
     };
 
     // Calculate EMA
@@ -225,6 +282,12 @@ export default function CandlestickChart() {
     const candleWidth = 10;
     const candleSpacing = 14;
 
+    // Trend state management
+    let currentTrend: 'up' | 'down' | 'sideways' = 'up';
+    let trendDuration = 0;
+    const minTrendDuration = 8; // Minimum candles before trend can change
+    const maxTrendDuration = 25; // Maximum candles before trend must change
+
     let animationId: number;
     let lastCandleTime = Date.now();
     const candleInterval = 150;
@@ -270,40 +333,134 @@ export default function CandlestickChart() {
 
       const priceRange = maxPrice - minPrice;
       const padding = { top: 0, bottom: 0, left: 0, right: 0 };
-      const chartHeight = rect.height - padding.top - padding.bottom;
+
+      // Split canvas: main chart (3/4), sub chart (1/4)
+      const mainChartHeight = (rect.height * 3) / 4;
+      const subChartHeight = rect.height / 4;
+      const subChartTop = mainChartHeight;
 
       // Calculate CCI for NS indicator (Sensitivity = 1)
       const cci1 = candles.length >= 7 ? calculateCCI(candles, 7) : [];
       const cci2 = candles.length >= 49 ? calculateCCI(candles, 49) : [];
 
-      // Draw vertical grid lines
+      // Calculate EMA for sub chart (Golden/Death Cross)
+      const closes = candles.map(c => c.close);
+      const ema12 = candles.length >= 12 ? calculateEMA(closes, 12) : [];
+      const ema26 = candles.length >= 26 ? calculateEMA(closes, 26) : [];
+
+      // Detect Golden Cross and Death Cross
+      const crosses: Array<{ index: number; type: 'golden' | 'death' }> = [];
+      for (let i = 1; i < candles.length; i++) {
+        if (ema12[i] && ema26[i] && ema12[i - 1] && ema26[i - 1]) {
+          // Golden Cross: EMA12 crosses above EMA26
+          if (ema12[i - 1] <= ema26[i - 1] && ema12[i] > ema26[i]) {
+            crosses.push({ index: i, type: 'golden' });
+          }
+          // Death Cross: EMA12 crosses below EMA26
+          if (ema12[i - 1] >= ema26[i - 1] && ema12[i] < ema26[i]) {
+            crosses.push({ index: i, type: 'death' });
+          }
+        }
+      }
+
+      // ===== MAIN CHART (2/3 top) =====
+
+      // Draw vertical grid lines (main chart)
       ctx.strokeStyle = 'rgba(200, 200, 200, 0.3)';
       ctx.lineWidth = 1;
       for (let i = 0; i < candles.length; i += 10) {
         const x = i * candleSpacing + candleWidth / 2;
         ctx.beginPath();
         ctx.moveTo(x, 0);
-        ctx.lineTo(x, rect.height);
+        ctx.lineTo(x, mainChartHeight);
         ctx.stroke();
       }
 
-      // Draw horizontal grid lines
-      for (let i = 0; i <= 8; i++) {
-        const y = padding.top + (chartHeight / 8) * i;
+      // Draw horizontal grid lines (main chart)
+      for (let i = 0; i <= 6; i++) {
+        const y = padding.top + (mainChartHeight / 6) * i;
         ctx.beginPath();
         ctx.moveTo(0, y);
         ctx.lineTo(rect.width, y);
         ctx.stroke();
       }
 
+      // Draw data panel in top-right corner
+      if (candles.length > 0) {
+        const latestCandle = candles[candles.length - 1];
+        const panelX = rect.width - 200;
+        const panelY = 30;
+        const lineHeight = 14;
+
+        // Semi-transparent background (no border)
+        ctx.fillStyle = 'rgba(255, 255, 255, 0.85)';
+        ctx.fillRect(panelX - 5, panelY - 5, 155, 95);
+
+        // Text styling
+        ctx.font = '10px monospace';
+        ctx.textAlign = 'left';
+
+        // Open
+        ctx.fillStyle = 'rgba(100, 100, 100, 1)';
+        ctx.fillText('开:', panelX, panelY);
+        ctx.fillStyle = 'rgba(0, 0, 0, 1)';
+        ctx.fillText(latestCandle.open.toFixed(2), panelX + 35, panelY);
+
+        // High
+        ctx.fillStyle = 'rgba(100, 100, 100, 1)';
+        ctx.fillText('高:', panelX, panelY + lineHeight);
+        ctx.fillStyle = 'rgba(0, 0, 0, 1)';
+        ctx.fillText(latestCandle.high.toFixed(2), panelX + 35, panelY + lineHeight);
+
+        // Low
+        ctx.fillStyle = 'rgba(100, 100, 100, 1)';
+        ctx.fillText('低:', panelX, panelY + lineHeight * 2);
+        ctx.fillStyle = 'rgba(0, 0, 0, 1)';
+        ctx.fillText(latestCandle.low.toFixed(2), panelX + 35, panelY + lineHeight * 2);
+
+        // Close
+        ctx.fillStyle = 'rgba(100, 100, 100, 1)';
+        ctx.fillText('收:', panelX, panelY + lineHeight * 3);
+        const closeColor = latestCandle.close >= latestCandle.open ? 'rgba(34, 197, 94, 1)' : 'rgba(239, 68, 68, 1)';
+        ctx.fillStyle = closeColor;
+        ctx.fillText(latestCandle.close.toFixed(2), panelX + 35, panelY + lineHeight * 3);
+
+        // Volume
+        ctx.fillStyle = 'rgba(100, 100, 100, 1)';
+        ctx.fillText('量:', panelX, panelY + lineHeight * 4);
+        ctx.fillStyle = 'rgba(0, 0, 0, 1)';
+        ctx.fillText((latestCandle.volume / 1000).toFixed(1) + 'K', panelX + 35, panelY + lineHeight * 4);
+
+        // Separator line
+        ctx.strokeStyle = 'rgba(200, 200, 200, 0.5)';
+        ctx.lineWidth = 1;
+        ctx.beginPath();
+        ctx.moveTo(panelX, panelY + lineHeight * 4.5);
+        ctx.lineTo(panelX + 145, panelY + lineHeight * 4.5);
+        ctx.stroke();
+
+        // Bid price (买价 - green, lower)
+        ctx.fillStyle = 'rgba(34, 197, 94, 1)';
+        ctx.fillText('买价:', panelX, panelY + lineHeight * 5.5);
+        ctx.fillText(currentBidPrice.toFixed(2), panelX + 50, panelY + lineHeight * 5.5);
+
+        // Ask price (卖价 - red, higher)
+        ctx.fillStyle = 'rgba(239, 68, 68, 1)';
+        ctx.fillText('卖价:', panelX, panelY + lineHeight * 6.5);
+        ctx.fillText(currentAskPrice.toFixed(2), panelX + 50, panelY + lineHeight * 6.5);
+
+        // Reset text align
+        ctx.textAlign = 'start';
+      }
+
       // Draw candles with NS indicator colors
       candles.forEach((candle, index) => {
         const x = index * candleSpacing + candleWidth / 2;
 
-        const highY = padding.top + ((maxPrice - candle.high) / priceRange) * chartHeight;
-        const lowY = padding.top + ((maxPrice - candle.low) / priceRange) * chartHeight;
-        const openY = padding.top + ((maxPrice - candle.open) / priceRange) * chartHeight;
-        const closeY = padding.top + ((maxPrice - candle.close) / priceRange) * chartHeight;
+        const highY = padding.top + ((maxPrice - candle.high) / priceRange) * mainChartHeight;
+        const lowY = padding.top + ((maxPrice - candle.low) / priceRange) * mainChartHeight;
+        const openY = padding.top + ((maxPrice - candle.open) / priceRange) * mainChartHeight;
+        const closeY = padding.top + ((maxPrice - candle.close) / priceRange) * mainChartHeight;
         const bodyTop = Math.min(openY, closeY);
         const bodyBottom = Math.max(openY, closeY);
         const bodyHeight = Math.max(bodyBottom - bodyTop, 1);
@@ -342,7 +499,7 @@ export default function CandlestickChart() {
       });
 
       // Draw ask price line (卖价 - red, higher price)
-      const askY = padding.top + ((maxPrice - currentAskPrice) / priceRange) * chartHeight;
+      const askY = padding.top + ((maxPrice - currentAskPrice) / priceRange) * mainChartHeight;
       ctx.strokeStyle = 'rgba(239, 68, 68, 0.6)'; // Red - Ask (higher)
       ctx.lineWidth = 2;
       ctx.setLineDash([10, 5]);
@@ -353,7 +510,7 @@ export default function CandlestickChart() {
       ctx.setLineDash([]);
 
       // Draw bid price line (买价 - green, lower price)
-      const bidY = padding.top + ((maxPrice - currentBidPrice) / priceRange) * chartHeight;
+      const bidY = padding.top + ((maxPrice - currentBidPrice) / priceRange) * mainChartHeight;
       ctx.strokeStyle = 'rgba(34, 197, 94, 0.6)'; // Green - Bid (lower)
       ctx.lineWidth = 2;
       ctx.setLineDash([10, 5]);
@@ -365,9 +522,9 @@ export default function CandlestickChart() {
 
       // EMA20 line removed per user request
 
-      // Draw Keltner Channel (MA20, ATR multiplier 0.3, purple 1px)
+      // Draw Keltner Channel (MA20, ATR multiplier 0.5, purple 1px)
       if (candles.length >= 20) {
-        const keltner = calculateKeltnerChannel(candles, 20, 0.3);
+        const keltner = calculateKeltnerChannel(candles, 20, 0.5);
 
         // Draw upper band
         ctx.strokeStyle = 'rgba(147, 51, 234, 0.8)'; // Purple
@@ -375,7 +532,7 @@ export default function CandlestickChart() {
         ctx.beginPath();
         keltner.upper.forEach((value, index) => {
           const x = index * candleSpacing + candleWidth / 2;
-          const y = padding.top + ((maxPrice - value) / priceRange) * chartHeight;
+          const y = padding.top + ((maxPrice - value) / priceRange) * mainChartHeight;
           if (index === 0) {
             ctx.moveTo(x, y);
           } else {
@@ -390,7 +547,7 @@ export default function CandlestickChart() {
         ctx.beginPath();
         keltner.middle.forEach((value, index) => {
           const x = index * candleSpacing + candleWidth / 2;
-          const y = padding.top + ((maxPrice - value) / priceRange) * chartHeight;
+          const y = padding.top + ((maxPrice - value) / priceRange) * mainChartHeight;
           if (index === 0) {
             ctx.moveTo(x, y);
           } else {
@@ -405,7 +562,7 @@ export default function CandlestickChart() {
         ctx.beginPath();
         keltner.lower.forEach((value, index) => {
           const x = index * candleSpacing + candleWidth / 2;
-          const y = padding.top + ((maxPrice - value) / priceRange) * chartHeight;
+          const y = padding.top + ((maxPrice - value) / priceRange) * mainChartHeight;
           if (index === 0) {
             ctx.moveTo(x, y);
           } else {
@@ -413,6 +570,133 @@ export default function CandlestickChart() {
           }
         });
         ctx.stroke();
+      }
+
+      // ===== SUB CHART (1/3 bottom) - Golden/Death Cross =====
+
+      // Draw separator line
+      ctx.strokeStyle = 'rgba(100, 100, 100, 0.8)';
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      ctx.moveTo(0, subChartTop);
+      ctx.lineTo(rect.width, subChartTop);
+      ctx.stroke();
+
+      // Draw sub chart background
+      ctx.fillStyle = 'rgba(245, 245, 245, 0.3)';
+      ctx.fillRect(0, subChartTop, rect.width, subChartHeight);
+
+      // Draw sub chart grid lines
+      ctx.strokeStyle = 'rgba(200, 200, 200, 0.3)';
+      ctx.lineWidth = 1;
+      for (let i = 0; i <= 3; i++) {
+        const y = subChartTop + (subChartHeight / 3) * i;
+        ctx.beginPath();
+        ctx.moveTo(0, y);
+        ctx.lineTo(rect.width, y);
+        ctx.stroke();
+      }
+
+      // Calculate EMA value range for sub chart
+      if (ema12.length > 0 && ema26.length > 0) {
+        const allEmaValues = [...ema12, ...ema26].filter(v => v > 0);
+        let minEma = Math.min(...allEmaValues);
+        let maxEma = Math.max(...allEmaValues);
+        const emaRange = maxEma - minEma;
+        const emaPadding = emaRange * 0.1; // 10% padding
+        minEma -= emaPadding;
+        maxEma += emaPadding;
+        const emaValueRange = maxEma - minEma;
+
+        // Draw EMA12 line (fast line - blue)
+        ctx.strokeStyle = 'rgba(59, 130, 246, 1)'; // Blue
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        ema12.forEach((value, index) => {
+          if (value > 0) {
+            const x = index * candleSpacing + candleWidth / 2;
+            const y = subChartTop + ((maxEma - value) / emaValueRange) * subChartHeight;
+            if (index === 0 || ema12[index - 1] <= 0) {
+              ctx.moveTo(x, y);
+            } else {
+              ctx.lineTo(x, y);
+            }
+          }
+        });
+        ctx.stroke();
+
+        // Draw EMA26 line (slow line - orange)
+        ctx.strokeStyle = 'rgba(249, 115, 22, 1)'; // Orange
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        ema26.forEach((value, index) => {
+          if (value > 0) {
+            const x = index * candleSpacing + candleWidth / 2;
+            const y = subChartTop + ((maxEma - value) / emaValueRange) * subChartHeight;
+            if (index === 0 || ema26[index - 1] <= 0) {
+              ctx.moveTo(x, y);
+            } else {
+              ctx.lineTo(x, y);
+            }
+          }
+        });
+        ctx.stroke();
+
+        // Mark Golden Cross and Death Cross
+        crosses.forEach(cross => {
+          const x = cross.index * candleSpacing + candleWidth / 2;
+          const ema12Value = ema12[cross.index];
+          const y = subChartTop + ((maxEma - ema12Value) / emaValueRange) * subChartHeight;
+
+          if (cross.type === 'golden') {
+            // Golden Cross - green circle with up arrow
+            ctx.fillStyle = 'rgba(34, 197, 94, 0.8)';
+            ctx.beginPath();
+            ctx.arc(x, y, 6, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.strokeStyle = 'rgba(34, 197, 94, 1)';
+            ctx.lineWidth = 2;
+            ctx.stroke();
+
+            // Up arrow
+            ctx.strokeStyle = 'rgba(34, 197, 94, 1)';
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            ctx.moveTo(x, y - 15);
+            ctx.lineTo(x, y - 8);
+            ctx.moveTo(x, y - 15);
+            ctx.lineTo(x - 3, y - 12);
+            ctx.moveTo(x, y - 15);
+            ctx.lineTo(x + 3, y - 12);
+            ctx.stroke();
+          } else {
+            // Death Cross - red circle with down arrow
+            ctx.fillStyle = 'rgba(239, 68, 68, 0.8)';
+            ctx.beginPath();
+            ctx.arc(x, y, 6, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.strokeStyle = 'rgba(239, 68, 68, 1)';
+            ctx.lineWidth = 2;
+            ctx.stroke();
+
+            // Down arrow
+            ctx.strokeStyle = 'rgba(239, 68, 68, 1)';
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            ctx.moveTo(x, y + 15);
+            ctx.lineTo(x, y + 8);
+            ctx.moveTo(x, y + 15);
+            ctx.lineTo(x - 3, y + 12);
+            ctx.moveTo(x, y + 15);
+            ctx.lineTo(x + 3, y + 12);
+            ctx.stroke();
+          }
+        });
+
+        // Draw labels
+        ctx.fillStyle = 'rgba(0, 0, 0, 0.8)';
+        ctx.font = '11px Arial';
+        ctx.fillText('EMA12/26', 10, subChartTop + 15);
       }
 
       // ZigZag indicator removed per user request
