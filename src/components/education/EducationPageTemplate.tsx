@@ -147,8 +147,12 @@ export default function EducationPageTemplate({
                   content.ctaPrimaryButton.includes('Partner Brokers')
                     ? '/partners/brokers'
                     : content.ctaPrimaryButton.includes('心理测评') ||
-                      content.ctaPrimaryButton.includes('Psychology Test')
+                      content.ctaPrimaryButton.includes('Psychology Test') ||
+                      content.ctaPrimaryButton.includes('Psychology Assessment')
                     ? '/splan/psychology-test'
+                    : content.ctaPrimaryButton.includes('使用工具') ||
+                      content.ctaPrimaryButton.includes('Use Tools')
+                    ? '/dashboard'
                     : '/splan/join-us'
                 }
                 className="px-10 py-4 bg-white dark:bg-black text-black dark:text-white font-bold text-lg border-2 border-white dark:border-black hover:bg-transparent hover:text-white dark:hover:bg-transparent dark:hover:text-black transition-all inline-block text-center"
@@ -156,7 +160,18 @@ export default function EducationPageTemplate({
                 {content.ctaPrimaryButton}
               </LocaleLink>
               <LocaleLink
-                href="/splan/psychology-test"
+                href={
+                  content.ctaSecondaryButton.includes('心理测评') ||
+                  content.ctaSecondaryButton.includes('Psychology Test') ||
+                  content.ctaSecondaryButton.includes('Psychology Assessment')
+                    ? '/splan/psychology-test'
+                    : content.ctaSecondaryButton.includes('技术分析工具') ||
+                      content.ctaSecondaryButton.includes('Technical Analysis Tools') ||
+                      content.ctaSecondaryButton.includes('价格行为工具') ||
+                      content.ctaSecondaryButton.includes('Price Action Tools')
+                    ? '/dashboard'
+                    : '/splan/join-us'
+                }
                 className="px-10 py-4 bg-transparent text-white dark:text-black font-bold text-lg border-2 border-white dark:border-black hover:bg-white hover:text-black dark:hover:bg-black dark:hover:text-white transition-all inline-block text-center"
               >
                 {content.ctaSecondaryButton}

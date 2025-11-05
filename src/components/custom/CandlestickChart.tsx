@@ -285,32 +285,11 @@ export default function CandlestickChart() {
       ctx.stroke();
       ctx.setLineDash([]);
 
-      // Draw EMA20 line
+      // EMA20 line removed per user request
+
+      // Draw Keltner Channel (MA20, ATR multiplier 0.3, purple 1px)
       if (candles.length >= 20) {
-        const closes = candles.map(c => c.close);
-        const ema20 = calculateEMA(closes, 20);
-
-        ctx.strokeStyle = 'rgba(128, 128, 128, 0.7)'; // Gray
-        ctx.lineWidth = 4;
-        ctx.beginPath();
-
-        ema20.forEach((emaValue, index) => {
-          const x = index * candleSpacing + candleWidth / 2;
-          const y = padding.top + ((maxPrice - emaValue) / priceRange) * chartHeight;
-
-          if (index === 0) {
-            ctx.moveTo(x, y);
-          } else {
-            ctx.lineTo(x, y);
-          }
-        });
-
-        ctx.stroke();
-      }
-
-      // Draw Keltner Channel (MA20, ATR multiplier 0.5, purple 1px)
-      if (candles.length >= 20) {
-        const keltner = calculateKeltnerChannel(candles, 20, 0.5);
+        const keltner = calculateKeltnerChannel(candles, 20, 0.3);
 
         // Draw upper band
         ctx.strokeStyle = 'rgba(147, 51, 234, 0.8)'; // Purple
@@ -358,29 +337,7 @@ export default function CandlestickChart() {
         ctx.stroke();
       }
 
-      // Draw ZigZag indicator (depth 35, 2px line)
-      if (candles.length >= 10) {
-        const zigzagPoints = calculateZigZag(candles, 35);
-
-        if (zigzagPoints.length >= 2) {
-          ctx.strokeStyle = 'rgba(59, 130, 246, 0.8)'; // Blue
-          ctx.lineWidth = 2;
-          ctx.beginPath();
-
-          zigzagPoints.forEach((point, index) => {
-            const x = point.index * candleSpacing + candleWidth / 2;
-            const y = padding.top + ((maxPrice - point.price) / priceRange) * chartHeight;
-
-            if (index === 0) {
-              ctx.moveTo(x, y);
-            } else {
-              ctx.lineTo(x, y);
-            }
-          });
-
-          ctx.stroke();
-        }
-      }
+      // ZigZag indicator removed per user request
 
       animationId = requestAnimationFrame(draw);
     };

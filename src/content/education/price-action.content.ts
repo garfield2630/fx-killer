@@ -72,7 +72,7 @@ export const priceActionContent = {
     ctaTitle: '想要掌握价格行为交易的精髓？',
     ctaDescription: '加入FX Killer专业培训，学习裸K交易和供需区域策略',
     ctaPrimaryButton: '了解培训计划',
-    ctaSecondaryButton: '免费价格行为工具',
+    ctaSecondaryButton: '免费心理测评',
 
     footerPrevText: '← 支撑阻力',
     footerNextText: '风险管理 →',
@@ -151,7 +151,7 @@ export const priceActionContent = {
     ctaTitle: 'Want to Master the Essence of Price Action Trading?',
     ctaDescription: 'Join FX Killer professional training to learn naked trading and supply/demand strategies',
     ctaPrimaryButton: 'Learn About Training',
-    ctaSecondaryButton: 'Free Price Action Tools',
+    ctaSecondaryButton: 'Free Psychology Test',
 
     footerPrevText: '← Support Resistance',
     footerNextText: 'Risk Management →',
