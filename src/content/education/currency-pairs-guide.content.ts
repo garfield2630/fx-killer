@@ -62,7 +62,7 @@ export const currencyPairsGuideContent = {
         description: '掌握全球外汇交易时间'
       },
       {
-        href: '/brokers',
+        href: '/partners/brokers',
         icon: '🏦',
         title: '经纪商对比',
         description: '找到点差最低的交易平台'
@@ -76,6 +76,8 @@ export const currencyPairsGuideContent = {
 
     footerPrevText: '← 外汇基础',
     footerNextText: '市场参与者 →',
+    footerPrevHref: '/education/forex-basics',
+    footerNextHref: '/education/market-participants',
   } as EducationPageContent,
 
   en: {
@@ -139,7 +141,7 @@ export const currencyPairsGuideContent = {
         description: 'Master global forex trading hours'
       },
       {
-        href: '/brokers',
+        href: '/partners/brokers',
         icon: '🏦',
         title: 'Broker Comparison',
         description: 'Find platforms with lowest spreads'
@@ -153,5 +155,7 @@ export const currencyPairsGuideContent = {
 
     footerPrevText: '← Forex Basics',
     footerNextText: 'Market Participants →',
+    footerPrevHref: '/education/forex-basics',
+    footerNextHref: '/education/market-participants',
   } as EducationPageContent,
 };

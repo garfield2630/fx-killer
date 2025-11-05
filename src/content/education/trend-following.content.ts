@@ -76,6 +76,8 @@ export const trendFollowingContent = {
 
     footerPrevText: '← 剥头皮交易',
     footerNextText: '突破交易 →',
+    footerPrevHref: '/education/scalping',
+    footerNextHref: '/education/breakout-trading',
   } as EducationPageContent,
 
   en: {
@@ -153,5 +155,7 @@ export const trendFollowingContent = {
 
     footerPrevText: '← Scalping',
     footerNextText: 'Breakout Trading →',
+    footerPrevHref: '/education/scalping',
+    footerNextHref: '/education/breakout-trading',
   } as EducationPageContent,
 };

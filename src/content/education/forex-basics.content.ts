@@ -44,6 +44,8 @@ export interface EducationPageContent {
   // Footer navigation
   footerPrevText: string;
   footerNextText: string;
+  footerPrevHref?: string;
+  footerNextHref?: string;
 }
 
 export const forexBasicsContent = {
@@ -122,6 +124,8 @@ export const forexBasicsContent = {
 
     footerPrevText: '← 教育中心首页',
     footerNextText: '浏览所有课程 →',
+    footerPrevHref: '/education',
+    footerNextHref: '/education',
   } as EducationPageContent,
 
   en: {
@@ -199,5 +203,7 @@ export const forexBasicsContent = {
 
     footerPrevText: '← Education Center',
     footerNextText: 'Browse All Courses →',
+    footerPrevHref: '/education',
+    footerNextHref: '/education',
   } as EducationPageContent,
 };

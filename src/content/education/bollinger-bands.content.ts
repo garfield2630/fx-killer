@@ -76,6 +76,8 @@ export const bollingerBandsContent = {
 
     footerPrevText: '← 杠杆与保证金',
     footerNextText: '肯特纳通道 →',
+    footerPrevHref: '/education/leverage-and-margin',
+    footerNextHref: '/education/keltner-channels',
   } as EducationPageContent,
 
   en: {
@@ -153,5 +155,7 @@ export const bollingerBandsContent = {
 
     footerPrevText: '← Leverage & Margin',
     footerNextText: 'Keltner Channels →',
+    footerPrevHref: '/education/leverage-and-margin',
+    footerNextHref: '/education/keltner-channels',
   } as EducationPageContent,
 };

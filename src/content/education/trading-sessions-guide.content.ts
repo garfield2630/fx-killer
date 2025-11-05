@@ -76,6 +76,8 @@ export const tradingSessionsContent = {
 
     footerPrevText: '← 外汇交易基础',
     footerNextText: '点差与佣金 →',
+    footerPrevHref: '/education/forex-basics',
+    footerNextHref: '/education/spreads-and-commissions',
   } as EducationPageContent,
 
   en: {
@@ -153,5 +155,7 @@ export const tradingSessionsContent = {
 
     footerPrevText: '← Forex Basics',
     footerNextText: 'Spreads & Commissions →',
+    footerPrevHref: '/education/forex-basics',
+    footerNextHref: '/education/spreads-and-commissions',
   } as EducationPageContent,
 };

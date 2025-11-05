@@ -62,7 +62,7 @@ export const supportResistanceContent = {
         description: '基于支撑阻力的裸K策略'
       },
       {
-        href: '/training',
+        href: '/splan/join-us',
         icon: '🎓',
         title: '培训课程',
         description: '系统学习支撑阻力交易'
@@ -76,6 +76,8 @@ export const supportResistanceContent = {
 
     footerPrevText: '← K线形态',
     footerNextText: '价格行为 →',
+    footerPrevHref: '/education/candlestick-patterns',
+    footerNextHref: '/education/price-action',
   } as EducationPageContent,
 
   en: {
@@ -139,7 +141,7 @@ export const supportResistanceContent = {
         description: 'Naked trading based on S/R'
       },
       {
-        href: '/training',
+        href: '/splan/join-us',
         icon: '🎓',
         title: 'Training Course',
         description: 'Systematically learn S/R trading'
@@ -153,5 +155,7 @@ export const supportResistanceContent = {
 
     footerPrevText: '← Candlestick Patterns',
     footerNextText: 'Price Action →',
+    footerPrevHref: '/education/candlestick-patterns',
+    footerNextHref: '/education/price-action',
   } as EducationPageContent,
 };

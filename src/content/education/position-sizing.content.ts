@@ -79,6 +79,8 @@ export const positionSizingContent = {
 
     footerPrevText: '← 风险管理',
     footerNextText: '止损策略 →',
+    footerPrevHref: '/education/risk-management',
+    footerNextHref: '/education/stop-loss-strategies',
   } as EducationPageContent,
 
   en: {
@@ -159,5 +161,7 @@ export const positionSizingContent = {
 
     footerPrevText: '← Risk Management',
     footerNextText: 'Stop Loss Strategies →',
+    footerPrevHref: '/education/risk-management',
+    footerNextHref: '/education/stop-loss-strategies',
   } as EducationPageContent,
 };

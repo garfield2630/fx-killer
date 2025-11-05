@@ -62,7 +62,7 @@ export const candlestickPatternsContent = {
         description: '裸K交易的完整策略'
       },
       {
-        href: '/training',
+        href: '/splan/join-us',
         icon: '🎓',
         title: '培训课程',
         description: '系统学习技术分析'
@@ -76,6 +76,8 @@ export const candlestickPatternsContent = {
 
     footerPrevText: '← 市场参与者',
     footerNextText: '支撑阻力 →',
+    footerPrevHref: '/education/market-participants',
+    footerNextHref: '/education/support-resistance',
   } as EducationPageContent,
 
   en: {
@@ -139,7 +141,7 @@ export const candlestickPatternsContent = {
         description: 'Complete naked trading strategy'
       },
       {
-        href: '/training',
+        href: '/splan/join-us',
         icon: '🎓',
         title: 'Training Course',
         description: 'Systematically learn technical analysis'
@@ -153,5 +155,7 @@ export const candlestickPatternsContent = {
 
     footerPrevText: '← Market Participants',
     footerNextText: 'Support Resistance →',
+    footerPrevHref: '/education/market-participants',
+    footerNextHref: '/education/support-resistance',
   } as EducationPageContent,
 };

@@ -164,13 +164,13 @@ export default function EducationPageTemplate({
         {/* Footer Navigation */}
         <nav className="mt-16 flex justify-between items-center pt-8 border-t-2 border-black dark:border-white">
           <Link
-            href="/education"
+            href={content.footerPrevHref || "/education"}
             className="text-gray-600 dark:text-gray-400 hover:text-black dark:hover:text-white font-bold transition-colors"
           >
             {content.footerPrevText}
           </Link>
           <Link
-            href="/education"
+            href={content.footerNextHref || "/education"}
             className="text-gray-600 dark:text-gray-400 hover:text-black dark:hover:text-white font-bold transition-colors"
           >
             {content.footerNextText}

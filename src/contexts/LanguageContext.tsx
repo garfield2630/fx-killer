@@ -991,6 +991,10 @@ export function LanguageProvider({ children }: { children: React.ReactNode }) {
     const newLanguage = language === 'zh' ? 'en' : 'zh';
     setLanguage(newLanguage);
     localStorage.setItem('language', newLanguage);
+    // Update cookie for Server Components
+    document.cookie = `language=${newLanguage}; path=/; max-age=31536000`; // 1 year
+    // Reload page to apply language change to Server Components
+    window.location.reload();
   };
 
   const t = (key: string): string => {

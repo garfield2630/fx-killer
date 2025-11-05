@@ -76,6 +76,8 @@ export const macdIndicatorContent = {
 
     footerPrevText: '← 肯特纳通道',
     footerNextText: 'EMA均线 →',
+    footerPrevHref: '/education/keltner-channels',
+    footerNextHref: '/education/ema-moving-averages',
   } as EducationPageContent,
 
   en: {
@@ -153,5 +155,7 @@ export const macdIndicatorContent = {
 
     footerPrevText: '← Keltner Channels',
     footerNextText: 'EMA Moving Averages →',
+    footerPrevHref: '/education/keltner-channels',
+    footerNextHref: '/education/ema-moving-averages',
   } as EducationPageContent,
 };

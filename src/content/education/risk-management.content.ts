@@ -79,6 +79,8 @@ export const riskManagementContent = {
 
     footerPrevText: '← 外汇基础',
     footerNextText: '仓位控制 →',
+    footerPrevHref: '/education/forex-basics',
+    footerNextHref: '/education/position-sizing',
   } as EducationPageContent,
 
   en: {
@@ -159,5 +161,7 @@ export const riskManagementContent = {
 
     footerPrevText: '← Forex Basics',
     footerNextText: 'Position Sizing →',
+    footerPrevHref: '/education/forex-basics',
+    footerNextHref: '/education/position-sizing',
   } as EducationPageContent,
 };

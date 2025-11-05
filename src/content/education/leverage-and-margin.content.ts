@@ -76,6 +76,8 @@ export const leverageMarginContent = {
 
     footerPrevText: '← 点差与佣金',
     footerNextText: '技术分析基础 →',
+    footerPrevHref: '/education/spreads-and-commissions',
+    footerNextHref: '/education/bollinger-bands',
   } as EducationPageContent,
 
   en: {
@@ -153,5 +155,7 @@ export const leverageMarginContent = {
 
     footerPrevText: '← Spreads & Commissions',
     footerNextText: 'Technical Analysis Basics →',
+    footerPrevHref: '/education/spreads-and-commissions',
+    footerNextHref: '/education/bollinger-bands',
   } as EducationPageContent,
 };

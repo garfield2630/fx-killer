@@ -76,6 +76,8 @@ export const keltnerChannelsContent = {
 
     footerPrevText: '← 布林带指标',
     footerNextText: 'MACD指标 →',
+    footerPrevHref: '/education/bollinger-bands',
+    footerNextHref: '/education/macd-indicator',
   } as EducationPageContent,
 
   en: {
@@ -153,5 +155,7 @@ export const keltnerChannelsContent = {
 
     footerPrevText: '← Bollinger Bands',
     footerNextText: 'MACD Indicator →',
+    footerPrevHref: '/education/bollinger-bands',
+    footerNextHref: '/education/macd-indicator',
   } as EducationPageContent,
 };

@@ -56,13 +56,13 @@ export const marketParticipantsContent = {
         description: '了解外汇市场运作原理'
       },
       {
-        href: '/education/order-flow-trading',
+        href: '/education/trading-psychology',
         icon: '📊',
-        title: '订单流交易',
+        title: '交易心理学',
         description: '学习跟随机构资金的策略'
       },
       {
-        href: '/brokers',
+        href: '/partners/brokers',
         icon: '🏦',
         title: '经纪商选择',
         description: '选择机构级别的交易平台'
@@ -76,6 +76,8 @@ export const marketParticipantsContent = {
 
     footerPrevText: '← 货币对指南',
     footerNextText: 'K线形态 →',
+    footerPrevHref: '/education/currency-pairs-guide',
+    footerNextHref: '/education/candlestick-patterns',
   } as EducationPageContent,
 
   en: {
@@ -133,13 +135,13 @@ export const marketParticipantsContent = {
         description: 'Understand forex market mechanics'
       },
       {
-        href: '/education/order-flow-trading',
+        href: '/education/trading-psychology',
         icon: '📊',
-        title: 'Order Flow Trading',
+        title: 'Trading Psychology',
         description: 'Learn to follow institutional capital'
       },
       {
-        href: '/brokers',
+        href: '/partners/brokers',
         icon: '🏦',
         title: 'Broker Selection',
         description: 'Choose institutional-grade platforms'
@@ -153,5 +155,7 @@ export const marketParticipantsContent = {
 
     footerPrevText: '← Currency Pairs',
     footerNextText: 'Candlestick Patterns →',
+    footerPrevHref: '/education/currency-pairs-guide',
+    footerNextHref: '/education/candlestick-patterns',
   } as EducationPageContent,
 };

@@ -76,6 +76,8 @@ export const rsiIndicatorContent = {
 
     footerPrevText: '← EMA均线',
     footerNextText: '浏览所有课程 →',
+    footerPrevHref: '/education/ema-moving-averages',
+    footerNextHref: '/education',
   } as EducationPageContent,
 
   en: {
@@ -153,5 +155,7 @@ export const rsiIndicatorContent = {
 
     footerPrevText: '← EMA Moving Averages',
     footerNextText: 'Browse All Courses →',
+    footerPrevHref: '/education/ema-moving-averages',
+    footerNextHref: '/education',
   } as EducationPageContent,
 };

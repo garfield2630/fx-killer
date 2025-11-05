@@ -76,6 +76,8 @@ export const brokerSelectionContent = {
 
     footerPrevText: '← 点差与佣金',
     footerNextText: '交易策略入门 →',
+    footerPrevHref: '/education/spreads-and-commissions',
+    footerNextHref: '/education/day-trading',
   } as EducationPageContent,
 
   en: {
@@ -153,5 +155,7 @@ export const brokerSelectionContent = {
 
     footerPrevText: '← Spreads & Commissions',
     footerNextText: 'Trading Strategies →',
+    footerPrevHref: '/education/spreads-and-commissions',
+    footerNextHref: '/education/day-trading',
   } as EducationPageContent,
 };

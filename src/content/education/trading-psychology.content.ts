@@ -65,10 +65,10 @@ export const tradingPsychologyContent = {
         description: '掌握止损执行纪律'
       },
       {
-        href: '/tools/trading-journal',
+        href: '/tools/position-calculator',
         icon: '📓',
-        title: '交易日志工具',
-        description: '使用专业工具记录交易'
+        title: '仓位计算工具',
+        description: '使用专业工具管理仓位'
       }
     ],
 
@@ -79,6 +79,8 @@ export const tradingPsychologyContent = {
 
     footerPrevText: '← 止损策略',
     footerNextText: '风险回报比 →',
+    footerPrevHref: '/education/stop-loss-strategies',
+    footerNextHref: '/education/risk-reward',
   } as EducationPageContent,
 
   en: {
@@ -145,10 +147,10 @@ export const tradingPsychologyContent = {
         description: 'Master stop-loss execution discipline'
       },
       {
-        href: '/tools/trading-journal',
+        href: '/tools/position-calculator',
         icon: '📓',
-        title: 'Trading Journal Tool',
-        description: 'Use professional tools to record trades'
+        title: 'Position Calculator Tool',
+        description: 'Use professional tools to manage positions'
       }
     ],
 
@@ -159,5 +161,7 @@ export const tradingPsychologyContent = {
 
     footerPrevText: '← Stop Loss Strategies',
     footerNextText: 'Risk-Reward Ratio →',
+    footerPrevHref: '/education/stop-loss-strategies',
+    footerNextHref: '/education/risk-reward',
   } as EducationPageContent,
 };

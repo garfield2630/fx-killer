@@ -62,7 +62,7 @@ export const priceActionContent = {
         description: '价格行为的基本语言'
       },
       {
-        href: '/training',
+        href: '/splan/join-us',
         icon: '🎓',
         title: '培训课程',
         description: '系统学习价格行为策略'
@@ -76,6 +76,8 @@ export const priceActionContent = {
 
     footerPrevText: '← 支撑阻力',
     footerNextText: '风险管理 →',
+    footerPrevHref: '/education/support-resistance',
+    footerNextHref: '/education/risk-management',
   } as EducationPageContent,
 
   en: {
@@ -139,7 +141,7 @@ export const priceActionContent = {
         description: 'Basic language of price action'
       },
       {
-        href: '/training',
+        href: '/splan/join-us',
         icon: '🎓',
         title: 'Training Course',
         description: 'Systematically learn price action'
@@ -153,5 +155,7 @@ export const priceActionContent = {
 
     footerPrevText: '← Support Resistance',
     footerNextText: 'Risk Management →',
+    footerPrevHref: '/education/support-resistance',
+    footerNextHref: '/education/risk-management',
   } as EducationPageContent,
 };

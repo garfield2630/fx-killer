@@ -79,6 +79,8 @@ export const riskRewardContent = {
 
     footerPrevText: '← 交易心理',
     footerNextText: '技术分析 →',
+    footerPrevHref: '/education/trading-psychology',
+    footerNextHref: '/education/bollinger-bands',
   } as EducationPageContent,
 
   en: {
@@ -159,5 +161,7 @@ export const riskRewardContent = {
 
     footerPrevText: '← Trading Psychology',
     footerNextText: 'Technical Analysis →',
+    footerPrevHref: '/education/trading-psychology',
+    footerNextHref: '/education/bollinger-bands',
   } as EducationPageContent,
 };

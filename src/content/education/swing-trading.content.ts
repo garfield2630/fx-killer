@@ -76,6 +76,8 @@ export const swingTradingContent = {
 
     footerPrevText: '← 日内交易',
     footerNextText: '剥头皮交易 →',
+    footerPrevHref: '/education/day-trading',
+    footerNextHref: '/education/scalping',
   } as EducationPageContent,
 
   en: {
@@ -153,5 +155,7 @@ export const swingTradingContent = {
 
     footerPrevText: '← Day Trading',
     footerNextText: 'Scalping →',
+    footerPrevHref: '/education/day-trading',
+    footerNextHref: '/education/scalping',
   } as EducationPageContent,
 };

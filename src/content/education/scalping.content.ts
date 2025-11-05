@@ -76,6 +76,8 @@ export const scalpingContent = {
 
     footerPrevText: '← 波段交易',
     footerNextText: '趋势跟踪 →',
+    footerPrevHref: '/education/swing-trading',
+    footerNextHref: '/education/trend-following',
   } as EducationPageContent,
 
   en: {
@@ -153,5 +155,7 @@ export const scalpingContent = {
 
     footerPrevText: '← Swing Trading',
     footerNextText: 'Trend Following →',
+    footerPrevHref: '/education/swing-trading',
+    footerNextHref: '/education/trend-following',
   } as EducationPageContent,
 };

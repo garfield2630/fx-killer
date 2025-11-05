@@ -76,6 +76,8 @@ export const emaMovingAveragesContent = {
 
     footerPrevText: '← MACD指标',
     footerNextText: 'RSI指标 →',
+    footerPrevHref: '/education/macd-indicator',
+    footerNextHref: '/education/rsi-indicator',
   } as EducationPageContent,
 
   en: {
@@ -153,5 +155,7 @@ export const emaMovingAveragesContent = {
 
     footerPrevText: '← MACD Indicator',
     footerNextText: 'RSI Indicator →',
+    footerPrevHref: '/education/macd-indicator',
+    footerNextHref: '/education/rsi-indicator',
   } as EducationPageContent,
 };

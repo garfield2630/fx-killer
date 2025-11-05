@@ -79,6 +79,8 @@ export const stopLossStrategiesContent = {
 
     footerPrevText: '← 仓位控制',
     footerNextText: '交易心理 →',
+    footerPrevHref: '/education/position-sizing',
+    footerNextHref: '/education/trading-psychology',
   } as EducationPageContent,
 
   en: {
@@ -159,5 +161,7 @@ export const stopLossStrategiesContent = {
 
     footerPrevText: '← Position Sizing',
     footerNextText: 'Trading Psychology →',
+    footerPrevHref: '/education/position-sizing',
+    footerNextHref: '/education/trading-psychology',
   } as EducationPageContent,
 };

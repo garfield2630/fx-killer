@@ -76,6 +76,8 @@ export const dayTradingContent = {
 
     footerPrevText: '← 外汇基础',
     footerNextText: '波段交易 →',
+    footerPrevHref: '/education/forex-basics',
+    footerNextHref: '/education/swing-trading',
   } as EducationPageContent,
 
   en: {
@@ -153,5 +155,7 @@ export const dayTradingContent = {
 
     footerPrevText: '← Forex Basics',
     footerNextText: 'Swing Trading →',
+    footerPrevHref: '/education/forex-basics',
+    footerNextHref: '/education/swing-trading',
   } as EducationPageContent,
 };

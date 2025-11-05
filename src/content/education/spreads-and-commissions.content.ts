@@ -76,6 +76,8 @@ export const spreadsCommissionsContent = {
 
     footerPrevText: '← 交易时段指南',
     footerNextText: '杠杆与保证金 →',
+    footerPrevHref: '/education/trading-sessions-guide',
+    footerNextHref: '/education/leverage-and-margin',
   } as EducationPageContent,
 
   en: {
@@ -153,5 +155,7 @@ export const spreadsCommissionsContent = {
 
     footerPrevText: '← Trading Sessions',
     footerNextText: 'Leverage & Margin →',
+    footerPrevHref: '/education/trading-sessions-guide',
+    footerNextHref: '/education/leverage-and-margin',
   } as EducationPageContent,
 };

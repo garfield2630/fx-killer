@@ -76,6 +76,8 @@ export const breakoutTradingContent = {
 
     footerPrevText: '← 趋势跟踪',
     footerNextText: '技术指标 →',
+    footerPrevHref: '/education/trend-following',
+    footerNextHref: '/education/bollinger-bands',
   } as EducationPageContent,
 
   en: {
@@ -153,5 +155,7 @@ export const breakoutTradingContent = {
 
     footerPrevText: '← Trend Following',
     footerNextText: 'Technical Indicators →',
+    footerPrevHref: '/education/trend-following',
+    footerNextHref: '/education/bollinger-bands',
   } as EducationPageContent,
 };
