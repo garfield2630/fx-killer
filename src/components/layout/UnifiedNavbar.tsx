@@ -7,6 +7,7 @@ import { motion, AnimatePresence } from 'motion/react';
 import { useTheme } from '@/contexts/ThemeContext';
 import { useLanguage } from '@/contexts/LanguageContext';
 import BrandName from '@/components/custom/BrandName';
+import LocaleLink from '@/components/navigation/LocaleLink';
 
 export default function UnifiedNavbar() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -88,10 +89,15 @@ export default function UnifiedNavbar() {
   }, [pathname]);
 
   const isActive = (link: string) => {
+    // Extract path without locale prefix for comparison
+    const pathSegments = pathname.split('/').filter(Boolean);
+    const currentLocale = pathSegments[0] === 'en' || pathSegments[0] === 'zh' ? pathSegments[0] : 'zh';
+    const pathWithoutLocale = '/' + pathSegments.slice(currentLocale === pathSegments[0] ? 1 : 0).join('/');
+
     if (link === '/') {
-      return pathname === '/';
+      return pathWithoutLocale === '/' || pathWithoutLocale === '';
     }
-    return pathname?.startsWith(link);
+    return pathWithoutLocale.startsWith(link);
   };
 
   return (
@@ -107,9 +113,9 @@ export default function UnifiedNavbar() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
-          <Link href="/" className="flex items-center group">
+          <LocaleLink href="/" className="flex items-center group">
             <span className="text-2xl"><BrandName /></span>
-          </Link>
+          </LocaleLink>
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center space-x-1">
@@ -120,7 +126,7 @@ export default function UnifiedNavbar() {
                 onMouseEnter={() => item.hasDropdown && setOpenDropdown(item.name)}
                 onMouseLeave={() => item.hasDropdown && setOpenDropdown(null)}
               >
-                <Link
+                <LocaleLink
                   href={item.link}
                   className="relative px-4 py-2 text-sm font-medium transition-colors group flex items-center gap-1"
                 >
@@ -156,7 +162,7 @@ export default function UnifiedNavbar() {
                       transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
                     />
                   )}
-                </Link>
+                </LocaleLink>
 
                 {/* Dropdown Menu */}
                 {item.hasDropdown && item.dropdownItems && (
@@ -170,13 +176,13 @@ export default function UnifiedNavbar() {
                         className="absolute top-full left-0 mt-1 w-56 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 shadow-lg z-50"
                       >
                         {item.dropdownItems.map((dropdownItem, dropdownIndex) => (
-                          <Link
+                          <LocaleLink
                             key={dropdownIndex}
                             href={dropdownItem.link}
                             className="block px-4 py-3 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 hover:text-black dark:hover:text-white transition-colors border-b border-gray-100 dark:border-gray-800 last:border-b-0"
                           >
                             {dropdownItem.name}
-                          </Link>
+                          </LocaleLink>
                         ))}
                       </motion.div>
                     )}
@@ -217,12 +223,12 @@ export default function UnifiedNavbar() {
             </button>
 
             {/* Join Us Button */}
-            <Link
+            <LocaleLink
               href="/splan/join-us"
               className="px-4 py-2 bg-black dark:bg-white text-white dark:text-black text-sm font-semibold border border-black dark:border-white hover:bg-white hover:text-black dark:hover:bg-black dark:hover:text-white transition-colors"
             >
               {t('nav.join')}
-            </Link>
+            </LocaleLink>
           </div>
 
           {/* Mobile Menu Button */}
@@ -295,19 +301,19 @@ export default function UnifiedNavbar() {
                       {openDropdown === item.name && item.dropdownItems && (
                         <div className="pl-4 mt-1 space-y-1">
                           {item.dropdownItems.map((dropdownItem, dropdownIndex) => (
-                            <Link
+                            <LocaleLink
                               key={dropdownIndex}
                               href={dropdownItem.link}
                               className="block px-4 py-2 text-sm text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 hover:text-black dark:hover:text-white transition-colors"
                             >
                               {dropdownItem.name}
-                            </Link>
+                            </LocaleLink>
                           ))}
                         </div>
                       )}
                     </div>
                   ) : (
-                    <Link
+                    <LocaleLink
                       href={item.link}
                       className={`block px-4 py-3 text-sm font-medium transition-colors ${
                         isActive(item.link)
@@ -316,7 +322,7 @@ export default function UnifiedNavbar() {
                       }`}
                     >
                       {item.name}
-                    </Link>
+                    </LocaleLink>
                   )}
                 </div>
               ))}
@@ -331,12 +337,12 @@ export default function UnifiedNavbar() {
                 </button>
               </div>
 
-              <Link
+              <LocaleLink
                 href="/splan/join-us"
                 className="block px-4 py-3 bg-black dark:bg-white text-white dark:text-black text-sm font-semibold text-center mt-4 border border-black dark:border-white"
               >
                 {t('nav.join')}
-              </Link>
+              </LocaleLink>
             </div>
           </motion.div>
         )}

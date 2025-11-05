@@ -1,32 +1,20 @@
-import { cookies, headers } from 'next/headers';
-
 export type Language = 'zh' | 'en';
 
 /**
- * Get language preference on server side (for Server Components)
- * Priority: URL param > Cookie > Header > Default (zh)
+ * Get language from locale param (for Server Components with [locale] routing)
+ * @param locale - The locale from URL params
+ * @returns Language type
+ */
+export function getLanguageFromLocale(locale: string): Language {
+  return locale === 'en' ? 'en' : 'zh';
+}
+
+/**
+ * Legacy function for backward compatibility
+ * Now just returns 'zh' as default since we use URL-based routing
+ * @deprecated Use getLanguageFromLocale with params instead
  */
 export async function getServerLanguage(): Promise<Language> {
-  // Check cookies first
-  const cookieStore = await cookies();
-  const langCookie = cookieStore.get('language')?.value as Language | undefined;
-
-  if (langCookie === 'zh' || langCookie === 'en') {
-    return langCookie;
-  }
-
-  // Check Accept-Language header
-  const headersList = await headers();
-  const acceptLanguage = headersList.get('accept-language');
-
-  if (acceptLanguage) {
-    // Simple check for English preference
-    if (acceptLanguage.toLowerCase().includes('en') && !acceptLanguage.toLowerCase().includes('zh')) {
-      return 'en';
-    }
-  }
-
-  // Default to Chinese
   return 'zh';
 }
 

@@ -69,13 +69,18 @@ export const metadata: Metadata = {
   },
 };
 
-export default function PortalLayout({
+export default async function PortalLayout({
   children,
+  params,
 }: Readonly<{
   children: React.ReactNode;
+  params: Promise<{ locale: string }>;
 }>) {
+  const { locale } = await params;
+  const lang = locale === 'en' ? 'en-US' : 'zh-CN';
+
   return (
-    <html lang="zh-CN" className={inter.variable} suppressHydrationWarning style={{ colorScheme: 'light dark' }}>
+    <html lang={lang} className={inter.variable} suppressHydrationWarning style={{ colorScheme: 'light dark' }}>
       <head>
         <meta name="baidu-site-verification" content="codeva-kDRjETSiUu" />
         <meta name="color-scheme" content="light dark" />

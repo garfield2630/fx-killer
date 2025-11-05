@@ -1,6 +1,7 @@
 "use client";
 
 import React, { createContext, useContext, useState, useEffect } from 'react';
+import { usePathname, useRouter } from 'next/navigation';
 
 type Language = 'zh' | 'en';
 
@@ -975,26 +976,44 @@ const translations: Record<Language, Record<string, string>> = {
 };
 
 export function LanguageProvider({ children }: { children: React.ReactNode }) {
-  const [language, setLanguage] = useState<Language>('zh');
+  const pathname = usePathname();
+  const router = useRouter();
   const [mounted, setMounted] = useState(false);
+
+  // Extract language from URL pathname
+  const getLanguageFromPath = () => {
+    const locale = pathname.split('/')[1];
+    return locale === 'en' ? 'en' : 'zh';
+  };
+
+  const [language, setLanguage] = useState<Language>(getLanguageFromPath());
 
   useEffect(() => {
     setMounted(true);
-    // 从localStorage读取语言偏好
-    const savedLanguage = localStorage.getItem('language') as Language;
-    if (savedLanguage) {
-      setLanguage(savedLanguage);
-    }
   }, []);
+
+  // Update language when pathname changes
+  useEffect(() => {
+    const newLang = getLanguageFromPath();
+    if (newLang !== language) {
+      setLanguage(newLang);
+    }
+  }, [pathname]);
 
   const toggleLanguage = () => {
     const newLanguage = language === 'zh' ? 'en' : 'zh';
-    setLanguage(newLanguage);
-    localStorage.setItem('language', newLanguage);
-    // Update cookie for Server Components
+
+    // Update cookie for middleware
     document.cookie = `language=${newLanguage}; path=/; max-age=31536000`; // 1 year
-    // Reload page to apply language change to Server Components
-    window.location.reload();
+
+    // Get current path without locale prefix
+    const pathSegments = pathname.split('/').filter(Boolean);
+    const currentLocale = pathSegments[0] === 'en' || pathSegments[0] === 'zh' ? pathSegments[0] : 'zh';
+    const pathWithoutLocale = pathSegments.slice(currentLocale === pathSegments[0] ? 1 : 0).join('/');
+
+    // Navigate to new locale
+    const newPath = `/${newLanguage}${pathWithoutLocale ? `/${pathWithoutLocale}` : ''}`;
+    router.push(newPath);
   };
 
   const t = (key: string): string => {
