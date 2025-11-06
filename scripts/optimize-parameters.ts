@@ -45,6 +45,7 @@ const PARAMETER_RANGES = {
 };
 
 // 基础配置模板
+//哈哈
 const BASE_CONFIG: TradingConfig = {
   symbol: 'XAUUSDT',
   interval: '1m',
